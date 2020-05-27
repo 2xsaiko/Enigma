@@ -57,6 +57,7 @@ public class MenuBar {
 	private final JMenu scaleMenu = new JMenu();
 	private final JMenuItem fontItem = new JMenuItem();
 	private final JMenuItem customScaleItem = new JMenuItem();
+	private final JMenuItem settingsItem = new JMenuItem();
 	private final JMenuItem searchItem = new JMenuItem();
 
 	private final JMenu collabMenu = new JMenu();
@@ -108,6 +109,7 @@ public class MenuBar {
 		this.scaleMenu.add(this.customScaleItem);
 		this.viewMenu.add(this.scaleMenu);
 		this.viewMenu.add(this.fontItem);
+		this.viewMenu.add(this.settingsItem);
 		this.viewMenu.addSeparator();
 		this.viewMenu.add(this.searchItem);
 		this.ui.add(this.viewMenu);
@@ -136,6 +138,7 @@ public class MenuBar {
 		this.exitItem.addActionListener(_e -> this.gui.close());
 		this.customScaleItem.addActionListener(_e -> this.onCustomScaleClicked());
 		this.fontItem.addActionListener(_e -> this.onFontClicked(this.gui));
+		this.settingsItem.addActionListener(_e -> this.onSettingsClicked());
 		this.searchItem.addActionListener(_e -> this.onSearchClicked());
 		this.connectItem.addActionListener(_e -> this.onConnectClicked());
 		this.startServerItem.addActionListener(_e -> this.onStartServerClicked());
@@ -188,6 +191,7 @@ public class MenuBar {
 		this.scaleMenu.setText(I18n.translate("menu.view.scale"));
 		this.fontItem.setText(I18n.translate("menu.view.font"));
 		this.customScaleItem.setText(I18n.translate("menu.view.scale.custom"));
+		this.settingsItem.setText(I18n.translate("menu.view.settings"));
 		this.searchItem.setText(I18n.translate("menu.view.search"));
 
 		this.collabMenu.setText(I18n.translate("menu.collab"));
@@ -293,6 +297,11 @@ public class MenuBar {
 //			UiConfig.save();
 //		}
 		FontDialog.display(gui.getFrame());
+	}
+
+	private void onSettingsClicked() {
+		SettingsDialog sd = new SettingsDialog(this.gui.getFrame());
+		sd.show();
 	}
 
 	private void onSearchClicked() {
