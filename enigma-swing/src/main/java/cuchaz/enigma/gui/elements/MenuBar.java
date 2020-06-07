@@ -23,6 +23,7 @@ import cuchaz.enigma.gui.config.LookAndFeel;
 import cuchaz.enigma.gui.config.NetConfig;
 import cuchaz.enigma.gui.config.UiConfig;
 import cuchaz.enigma.gui.dialog.*;
+import cuchaz.enigma.gui.dialog.settings.SettingsDialog;
 import cuchaz.enigma.gui.util.GuiUtil;
 import cuchaz.enigma.gui.util.LanguageUtil;
 import cuchaz.enigma.gui.util.ScaleUtil;

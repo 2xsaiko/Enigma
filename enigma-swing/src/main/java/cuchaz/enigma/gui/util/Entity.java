@@ -1,6 +1,6 @@
 package cuchaz.enigma.gui.util;
 
-public interface Entity<Self> {
+public interface Entity<Self extends Entity<Self>> {
 
 	boolean isChanged();
 

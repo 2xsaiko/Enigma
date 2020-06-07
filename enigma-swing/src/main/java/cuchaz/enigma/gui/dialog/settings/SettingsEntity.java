@@ -1,4 +1,4 @@
-package cuchaz.enigma.gui.dialog;
+package cuchaz.enigma.gui.dialog.settings;
 
 import cuchaz.enigma.gui.util.Entity;
 
