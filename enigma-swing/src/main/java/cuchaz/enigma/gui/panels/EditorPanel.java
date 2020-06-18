@@ -34,6 +34,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import de.sciss.syntaxpane.DefaultSyntaxKit;
+
 import cuchaz.enigma.EnigmaProject;
 import cuchaz.enigma.analysis.EntryReference;
 import cuchaz.enigma.classhandle.ClassHandle;
@@ -63,7 +65,6 @@ import cuchaz.enigma.translation.representation.entry.ClassEntry;
 import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.utils.I18n;
 import cuchaz.enigma.utils.Result;
-import de.sciss.syntaxpane.DefaultSyntaxKit;
 
 public class EditorPanel {
 
