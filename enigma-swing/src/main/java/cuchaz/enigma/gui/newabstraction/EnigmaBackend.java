@@ -12,8 +12,8 @@ import cuchaz.enigma.newabstraction.EntryChange;
 import cuchaz.enigma.newabstraction.EntryUtil;
 import cuchaz.enigma.translation.mapping.EntryMapping;
 import cuchaz.enigma.translation.mapping.serde.MappingFormat;
-import cuchaz.enigma.translation.representation.entry.ClassEntry;
 import cuchaz.enigma.translation.representation.entry.Entry;
+import cuchaz.enigma.utils.validation.ValidationContext;
 
 public class EnigmaBackend implements MappingActionSink {
 
@@ -35,23 +35,25 @@ public class EnigmaBackend implements MappingActionSink {
 
     @Override
     public void apply(EntryChange<?> cs) {
+        ValidationContext vc = new ValidationContext();
         Entry<?> target = cs.getTarget();
         EntryMapping prev = this.project.getMapper().getDeobfMapping(target);
-//        EntryMapping mapping = EntryUtil.applyChange(vc, this.project.getMapper(), cs);
-//
-//        boolean renamed = !cs.getDeobfName().isUnchanged();
-//
-//        if (renamed && target instanceof ClassEntry && !((ClassEntry) target).isInnerClass()) {
-//            this.gui.moveClassTree(target, prev.getTargetName() == null, mapping.getTargetName() == null);
-//        }
-//
-//        if (!Objects.equals(prev.getTargetName(), mapping.getTargetName())) {
-//            this.chp.invalidateMapped();
-//        }
-//
-//        if (!Objects.equals(prev.getJavadoc(), mapping.getJavadoc())) {
-//            this.chp.invalidateJavadoc(target.getTopLevelClass());
-//        }
+        EntryMapping mapping = EntryUtil.applyChange(vc, this.project.getMapper(), cs);
+        vc.throwOnError();
+
+        boolean renamed = !cs.getDeobfName().isUnchanged();
+
+        // if (renamed && target instanceof ClassEntry && !((ClassEntry) target).isInnerClass()) {
+        //     this.gui.moveClassTree(target, prev.getTargetName() == null, mapping.getTargetName() == null);
+        // }
+
+        if (!Objects.equals(prev.getTargetName(), mapping.getTargetName())) {
+            this.chp.invalidateMapped();
+        }
+
+        if (!Objects.equals(prev.getJavadoc(), mapping.getJavadoc())) {
+            this.chp.invalidateJavadoc(target.getTopLevelClass());
+        }
     }
 
 }
