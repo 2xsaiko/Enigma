@@ -41,6 +41,7 @@ import cuchaz.enigma.gui.config.NetConfig;
 import cuchaz.enigma.gui.config.UiConfig;
 import cuchaz.enigma.gui.dialog.ProgressDialog;
 import cuchaz.enigma.gui.newabstraction.EntryValidation;
+import cuchaz.enigma.gui.newabstraction.UiBackend;
 import cuchaz.enigma.gui.stats.StatsGenerator;
 import cuchaz.enigma.gui.stats.StatsMember;
 import cuchaz.enigma.gui.util.History;
@@ -73,7 +74,7 @@ import cuchaz.enigma.utils.Utils;
 import cuchaz.enigma.utils.validation.PrintValidatable;
 import cuchaz.enigma.utils.validation.ValidationContext;
 
-public class GuiController implements ClientPacketHandler {
+public class GuiController implements ClientPacketHandler, UiBackend {
 	private final Gui gui;
 	public final Enigma enigma;
 

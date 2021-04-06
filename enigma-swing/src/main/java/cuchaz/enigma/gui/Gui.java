@@ -42,6 +42,7 @@ import cuchaz.enigma.gui.dialog.JavadocDialog;
 import cuchaz.enigma.gui.dialog.SearchDialog;
 import cuchaz.enigma.gui.elements.*;
 import cuchaz.enigma.gui.events.EditorActionListener;
+import cuchaz.enigma.gui.newabstraction.UiBackend;
 import cuchaz.enigma.gui.panels.*;
 import cuchaz.enigma.gui.renderer.CallsTreeCellRenderer;
 import cuchaz.enigma.gui.renderer.ImplementationsTreeCellRenderer;
@@ -52,7 +53,6 @@ import cuchaz.enigma.network.Message;
 import cuchaz.enigma.network.packet.MessageC2SPacket;
 import cuchaz.enigma.newabstraction.EntryChange;
 import cuchaz.enigma.source.Token;
-import cuchaz.enigma.translation.mapping.EntryRemapper;
 import cuchaz.enigma.translation.representation.entry.ClassEntry;
 import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.translation.representation.entry.FieldEntry;
@@ -80,7 +80,7 @@ public class Gui implements LanguageChangeListener {
 	public JFileChooser exportSourceFileChooser;
 	public JFileChooser exportJarFileChooser;
 	public SearchDialog searchDialog;
-	private GuiController controller;
+	private UiBackend controller;
 	private JFrame frame;
 	private JPanel classesPanel;
 	private JSplitPane splitClasses;
@@ -725,7 +725,8 @@ public class Gui implements LanguageChangeListener {
 
 		Entry<?> obfEntry = cursorReference.entry;
 
-		if (this.controller.project.getMapper().getDeobfMapping(obfEntry).getTargetName() != null) {
+		// if (this.controller.project.getMapper().getDeobfMapping(obfEntry).getTargetName() != null) {
+		if (this.controller.getMapping(obfEntry).getTargetName() != null) {
 			validateImmediateAction(vc -> this.controller.applyChange(vc, EntryChange.modify(obfEntry).clearDeobfName()));
 		} else {
 			validateImmediateAction(vc -> this.controller.applyChange(vc, EntryChange.modify(obfEntry).withDefaultDeobfName(this.getController().project)));
@@ -816,15 +817,19 @@ public class Gui implements LanguageChangeListener {
 			// the first place
 			// TODO optimize reverse class lookup, although it looks like it's
 			//      fast enough for now
-			EntryRemapper mapper = this.controller.project.getMapper();
 			ClassEntry deobf = (ClassEntry) prevData;
-			ClassEntry obf = mapper.getObfToDeobf().getAllEntries()
-					.filter(e -> e instanceof ClassEntry)
-					.map(e -> (ClassEntry) e)
-					.filter(e -> mapper.deobfuscate(e).equals(deobf))
-					.findAny().get();
+//			EntryRemapper mapper = this.controller.project.getMapper();
+//			ClassEntry obf = mapper.getObfToDeobf().getAllEntries()
+//					.filter(e -> e instanceof ClassEntry)
+//					.map(e -> (ClassEntry) e)
+//					.filter(e -> mapper.deobfuscate(e).equals(deobf))
+//					.findAny().get();
+
+			ClassEntry obf = this.controller.deobfToObf(deobf);
 
 			this.controller.applyChange(vc, EntryChange.modify(obf).withDeobfName(((ClassEntry) data).getFullName()));
+		} else {
+			throw new IllegalStateException(String.format("unhandled rename object data: '%s'", data));
 		}
 	}
 

@@ -1,35 +1,14 @@
 package cuchaz.enigma.gui.panels;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter.HighlightPainter;
@@ -44,7 +23,6 @@ import cuchaz.enigma.events.ClassHandleListener;
 import cuchaz.enigma.gui.BrowserCaret;
 import cuchaz.enigma.gui.EditableType;
 import cuchaz.enigma.gui.Gui;
-import cuchaz.enigma.gui.GuiController;
 import cuchaz.enigma.gui.config.LookAndFeel;
 import cuchaz.enigma.gui.config.Themes;
 import cuchaz.enigma.gui.config.UiConfig;
@@ -53,6 +31,7 @@ import cuchaz.enigma.gui.events.EditorActionListener;
 import cuchaz.enigma.gui.events.ThemeChangeListener;
 import cuchaz.enigma.gui.highlight.BoxHighlightPainter;
 import cuchaz.enigma.gui.highlight.SelectionHighlightPainter;
+import cuchaz.enigma.gui.newabstraction.UiBackend;
 import cuchaz.enigma.gui.util.GridBagConstraintsBuilder;
 import cuchaz.enigma.gui.util.ScaleUtil;
 import cuchaz.enigma.source.DecompiledClassSource;
@@ -85,7 +64,7 @@ public class EditorPanel {
 
 	private DisplayMode mode = DisplayMode.INACTIVE;
 
-	private final GuiController controller;
+	private final UiBackend controller;
 	private final Gui gui;
 
 	private EntryReference<Entry<?>, Entry<?>> cursorReference;
@@ -197,7 +176,7 @@ public class EditorPanel {
 			public void keyTyped(KeyEvent event) {
 				EntryReference<Entry<?>, Entry<?>> ref = EditorPanel.this.getCursorReference();
 				if (ref == null) return;
-				if (!EditorPanel.this.controller.project.isRenamable(ref)) return;
+				if (!EditorPanel.this.controller.isRenamable(ref)) return;
 
 				if (!event.isControlDown() && !event.isAltDown() && Character.isJavaIdentifierPart(event.getKeyChar())) {
 					EnigmaProject project = gui.getController().project;
@@ -536,10 +515,10 @@ public class EditorPanel {
 	 * @param reference
 	 */
 	private void showReference0(EntryReference<Entry<?>, Entry<?>> reference) {
-		if (this.source == null) return;
+		if (this.classHandle == null) return;
 		if (reference == null) return;
 
-		Collection<Token> tokens = this.controller.getTokensForReference(this.source, reference);
+		Collection<Token> tokens = this.controller.findReferences(this.classHandle, reference);
 		if (tokens.isEmpty()) {
 			// DEBUG
 			System.err.println(String.format("WARNING: no tokens found for %s in %s", reference, this.classHandle.getRef()));
