@@ -181,7 +181,7 @@ public class EditorPopupMenu {
 		this.openEntryItem.setEnabled(isRenamable && (isClassEntry || isFieldEntry || isMethodEntry || isConstructorEntry));
 		this.openPreviousItem.setEnabled(controller.hasPreviousReference());
 		this.openNextItem.setEnabled(controller.hasNextReference());
-		this.toggleMappingItem.setEnabled(isRenamable);
+		this.toggleMappingItem.setEnabled(isRenamable && (type != null && this.gui.isEditable(type)));
 
 		if (referenceEntry != null && this.gui.getController().project.getMapper().extendedDeobfuscate(referenceEntry).isDeobfuscated()) {
 			this.toggleMappingItem.setText(I18n.translate("popup_menu.reset_obfuscated"));
