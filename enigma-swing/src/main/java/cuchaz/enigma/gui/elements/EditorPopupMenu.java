@@ -164,8 +164,12 @@ public class EditorPopupMenu {
 			}
 		} else if (referenceEntry instanceof FieldEntry) {
 			type = EditableType.FIELD;
-		} else if (referenceEntry instanceof LocalVariableEntry) {
-			type = EditableType.LOCAL_VARIABLE;
+		} else if (referenceEntry instanceof LocalVariableEntry lve) {
+			if (lve.isArgument()) {
+				type = EditableType.PARAMETER;
+			} else {
+				type = EditableType.LOCAL_VARIABLE;
+			}
 		}
 
 		this.renameItem.setEnabled(isRenamable && (type != null && this.gui.isEditable(type)));

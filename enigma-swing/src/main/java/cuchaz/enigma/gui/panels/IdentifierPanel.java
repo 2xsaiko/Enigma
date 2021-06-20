@@ -118,7 +118,15 @@ public class IdentifierPanel {
 				th.addModifierRow(I18n.translate("info_panel.identifier.modifier"), EditableType.METHOD, this::onModifierChanged);
 			} else if (deobfEntry instanceof LocalVariableEntry) {
 				LocalVariableEntry lve = (LocalVariableEntry) deobfEntry;
-				this.nameField = th.addRenameTextField(EditableType.LOCAL_VARIABLE, lve.getName());
+				EditableType type;
+
+				if (lve.isArgument()) {
+					type = EditableType.PARAMETER;
+				} else {
+					type = EditableType.LOCAL_VARIABLE;
+				}
+
+				this.nameField = th.addRenameTextField(type, lve.getName());
 				th.addStringRow(I18n.translate("info_panel.identifier.class"), lve.getContainingClass().getFullName());
 				th.addStringRow(I18n.translate("info_panel.identifier.method"), lve.getParent().getName());
 				th.addStringRow(I18n.translate("info_panel.identifier.index"), Integer.toString(lve.getIndex()));
@@ -238,7 +246,7 @@ public class IdentifierPanel {
 				case CLASS -> I18n.translate("info_panel.identifier.class");
 				case METHOD -> I18n.translate("info_panel.identifier.method");
 				case FIELD -> I18n.translate("info_panel.identifier.field");
-				case LOCAL_VARIABLE -> I18n.translate("info_panel.identifier.variable");
+				case PARAMETER, LOCAL_VARIABLE -> I18n.translate("info_panel.identifier.variable");
 				default -> throw new IllegalStateException("Unexpected value: " + type);
 			};
 

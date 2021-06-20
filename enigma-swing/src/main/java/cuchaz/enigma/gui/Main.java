@@ -53,8 +53,10 @@ public class Main {
 		parser.acceptsAll(List.of("no-edit-methods", "M"), "Disable editing method names");
 		parser.acceptsAll(List.of("edit-fields", "f"), "Enable editing field names");
 		parser.acceptsAll(List.of("no-edit-fields", "F"), "Disable editing field names");
-		parser.acceptsAll(List.of("edit-locals", "l"), "Enable editing local variable and parameter names");
-		parser.acceptsAll(List.of("no-edit-locals", "L"), "Disable editing local variable and parameter names");
+		parser.acceptsAll(List.of("edit-parameters", "p"), "Enable editing parameter names");
+		parser.acceptsAll(List.of("no-edit-parameters", "P"), "Disable editing parameter names");
+		parser.acceptsAll(List.of("edit-locals"), "Enable editing local variable names");
+		parser.acceptsAll(List.of("no-edit-locals"), "Disable editing local variable names");
 		parser.acceptsAll(List.of("edit-javadocs", "d"), "Enable editing Javadocs");
 		parser.acceptsAll(List.of("no-edit-javadocs", "D"), "Disable editing Javadocs");
 
@@ -81,8 +83,16 @@ public class Main {
 						case "no-edit-methods" -> editables.remove(EditableType.METHOD);
 						case "edit-fields" -> editables.add(EditableType.FIELD);
 						case "no-edit-fields" -> editables.remove(EditableType.FIELD);
-						case "edit-locals" -> editables.add(EditableType.LOCAL_VARIABLE);
-						case "no-edit-locals" -> editables.remove(EditableType.LOCAL_VARIABLE);
+						case "edit-parameters" -> editables.add(EditableType.PARAMETER);
+						case "no-edit-parameters" -> editables.remove(EditableType.PARAMETER);
+						case "edit-locals" -> {
+							editables.add(EditableType.LOCAL_VARIABLE);
+							System.err.println("warning: --edit-locals has no effect as local variables are currently not editable");
+						}
+						case "no-edit-locals" -> {
+							editables.remove(EditableType.LOCAL_VARIABLE);
+							System.err.println("warning: --no-edit-locals has no effect as local variables are currently not editable");
+						}
 						case "edit-javadocs" -> editables.add(EditableType.JAVADOC);
 						case "no-edit-javadocs" -> editables.remove(EditableType.JAVADOC);
 					}
